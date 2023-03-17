@@ -15,7 +15,7 @@ const paypalBtn = ({order}) => {
               return actions.order.create({
                 purchase_units: [{
                   amount: {
-                    value: order.total
+                    value: order.total+(order.total > 5 ? 0 : 1)
                   }
                 }]
               });

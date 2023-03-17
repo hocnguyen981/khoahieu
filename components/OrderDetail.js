@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import basicBtn from './basicBtn'
 import PaypalBtn from './paypalBtn'
 import {patchData} from '../utils/fetchData'
 import {updateItem} from '../store/Actions'
@@ -22,7 +23,8 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
             return dispatch({type: 'NOTIFY', payload: {success: res.msg}})
         })
     }
-
+    //const priceTaShip = order.total > 5 ? 0 : 1;
+    
     if(!auth.user) return null;
     return(
         <>
@@ -94,7 +96,7 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                                     </div>
                                 ))
                             }
-                        </div>
+                        </div>  
 
                     </div>
 
@@ -103,7 +105,9 @@ const OrderDetail = ({orderDetail, state, dispatch}) => {
                 {
                     !order.paid && auth.user.role !== 'admin' &&
                     <div className="p-4">
-                        <h2 className="mb-4 text-uppercase">Total: ${order.total}</h2>
+                        <h2 className="mb-4 text-uppercase">Total: ${order.total+(order.total > 5 ? 0 : 1)}</h2>
+                      
+                         
                         <PaypalBtn order={order} />
                     </div>
                 }

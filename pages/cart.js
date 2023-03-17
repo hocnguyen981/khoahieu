@@ -18,6 +18,7 @@ const Cart = () => {
 
   const [callback, setCallback] = useState(false)
   const router = useRouter()
+ 
 
   useEffect(() => {
     const getTotal = () => {
@@ -91,6 +92,7 @@ const Cart = () => {
     })
 
   }
+  const priceTaShip = total > 5 ? 0 : 1;
   
   if( cart.length === 0 ) 
     return <img className="img-responsive w-100" src="/empty_cart.jpg" alt="not empty"/>
@@ -129,9 +131,9 @@ const Cart = () => {
               className="form-control mb-2" value={mobile}
               onChange={e => setMobile(e.target.value)} />
             </form>
-
-            <h3>Total: <span className="text-danger">${total}</span></h3>
-
+            <h5>Shipping fee: <span className="text-danger">${priceTaShip}</span></h5>
+            <h3>Total: <span className="text-danger">${total+priceTaShip}</span></h3>
+            
             
             <Link href={auth.user ? '#!' : '/signin'}>
               <a className="btn btn-dark my-2" onClick={handlePayment}>Proceed with payment</a>

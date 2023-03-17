@@ -53,28 +53,38 @@ const createOrder = async(req, res) => {
 
         })
 
-        cart.filter(item => {
+        const filteredItems = cart.filter(item => {
             return sold(item._id, item.quantity, item.inStock, item.sold)
         })
+        const id_product = filteredItems.map(item => item._id);
+        const qty = filteredItems.map(item => item.quantity);
+        console.log("id_product: " + id_product);
+
 
         await newOrder.save();
         const userID = mongoose.Types.ObjectId(result.id);
-        Orders.findById(userID, function(err, order) {
+        Products.findById(id_product, function(err, product) {
             user.findById(userID, function(err, user) {
 
-                console.log("User's email: " + user.email);
-                console.log("order: " + order.delivered);
+
+                const nameItem = product.title;
+                const priceItem = product.price;
+                const priceTaShip = priceItem > 5 ? 0 : 1;
+                console.log("sipe " + priceTaShip);
+                console.log("name pro: " + nameItem);
+                console.log("price pro: " + priceItem);
+                console.log("qty: " + qty);
 
 
                 const transporter = nodemailer.createTransport({
                     service: "gmail",
                     auth: {
-                        user: "hoavangtrencoxanh981@gmail.com",
-                        pass: "bytakwywycvcglvy"
+                        user: "vanhieu981981@gmail.com",
+                        pass: "jkuspqiqdmzuvrkh"
                     }
                 });
                 const mailOptions = {
-                    from: "hoavangtrencoxanh981@gmail.com",
+                    from: "vanhieu981981@gmail.com",
                     to: user.email,
                     subject: "Xác thực địa chỉ email",
                     text: `Xác thực địa chỉ email`,
@@ -91,9 +101,11 @@ const createOrder = async(req, res) => {
             <p>Điện thoại: : ${req.body.mobile}</p> 
             <p>Email:        ${user.email}</p>
             <p>Kiện hàng</p>
-            <p>Tên sản phẩm: ${user.email}</p>
-            <p>Tổng tiền:    ${req.body.total}</p>
-           
+            <p>Tên sản phẩm:    ${nameItem} &emsp;&emsp; Số lượng :${qty}</p>
+            <p>Thành tiền :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$${priceItem}</p>
+            <p>Phí Ship  :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$${priceTaShip}</p>
+            <p>Tổng  tiền :&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;$${req.body.total}</p>
+
             `
                 };
                 const result_ = transporter.sendMail(mailOptions);

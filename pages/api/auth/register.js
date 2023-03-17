@@ -38,12 +38,12 @@ const register = async(req, res) => {
         const transporter = nodemailer.createTransport({
             service: "gmail",
             auth: {
-                user: "hoavangtrencoxanh981@gmail.com",
-                pass: "bytakwywycvcglvy"
+                user: "vanhieu981981@gmail.com",
+                pass: "jkuspqiqdmzuvrkh"
             }
         });
         const mailOptions = {
-            from: "hoavangtrencoxanh981@gmail.com",
+            from: "vanhieu981981@gmail.com",
             to: req.body.email,
             subject: "Xác thực địa chỉ email",
             text: `Xác thực địa chỉ email`,
